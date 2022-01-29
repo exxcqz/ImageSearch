@@ -13,6 +13,7 @@ class ImagesCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 10
         imageView.backgroundColor = .red
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -27,6 +28,25 @@ class ImagesCollectionViewCell: UICollectionViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func configureImagesCell(imageInfo: ImageInfo) {
+
+        if let url = imageInfo.urls.raw {
+            NetworkRequest.shared.requestData(urlString: url) { result in
+                switch result {
+                case .success(let data):
+                    let image = UIImage(data: data)
+                    self.imageView.image = image
+                case .failure(let error):
+                    self.imageView.image = nil
+                    print("Not found image cell: \(error.localizedDescription)")
+                }
+            }
+        } else {
+            imageView.image = nil
+        }
+
     }
 }
 

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PhotoInfo: Codable {
+struct ImageInfo: Codable {
     let id: String
     let createdAt: String?
     let updatedAt: String?

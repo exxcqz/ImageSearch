@@ -10,7 +10,7 @@ import Foundation
 struct SearchResult: Codable {
     let total: Int
     let totalPages: Int
-    let results: [PhotoInfo]
+    let results: [ImageInfo]
 
     enum CodingKeys: String, CodingKey {
         case total

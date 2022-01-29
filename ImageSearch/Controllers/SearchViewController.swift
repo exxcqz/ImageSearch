@@ -22,6 +22,8 @@ class SearchViewController: UIViewController {
         return collectionView
     }()
 
+    var imagesData = [ImageInfo]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -53,6 +55,23 @@ class SearchViewController: UIViewController {
         searchController.searchBar.placeholder = "Search"
         searchController.obscuresBackgroundDuringPresentation = false
     }
+
+    private func fetchImages(imageName: String) {
+
+        let urlString = "https://api.unsplash.com/search/photos?page=1&query=\(imageName)&client_id=9C3O-Dt7AQEgrcVKBPwUpynL1z3x0uZCbUM-UTr1how"
+
+        NetworkDataFetch.shared.fetchImages(urlString: urlString) { searchResult, error in
+            if error == nil {
+                guard let searchResult = searchResult else { return }
+                self.imagesData = searchResult.results
+                print(self.imagesData)
+                self.imagesCollectionView.reloadData()
+
+            } else {
+                print(error?.localizedDescription)
+            }
+        }
+    }
 }
 
 //MARK: - UICollectionViewDataSource
@@ -60,11 +79,13 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 79
+        return imagesData.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ImagesCollectionViewCell
+        let imageInfo = imagesData[indexPath.row]
+        cell.configureImagesCell(imageInfo: imageInfo)
         return cell
     }
 }
@@ -96,7 +117,16 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
 extension SearchViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+
         print(searchText)
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let text = searchBar.text
+        guard let text = text else { return }
+        if text != "" {
+            fetchImages(imageName: text)
+        }
     }
 }
 
