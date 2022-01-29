@@ -23,6 +23,9 @@ class SearchViewController: UIViewController {
     }()
 
     private var imagesData = [ImageInfo]()
+    private var query = ""
+    private var currentPage = 1
+    private var width = UIScreen.main.bounds.size.width / 375
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,15 +61,13 @@ class SearchViewController: UIViewController {
 
     private func fetchImages(query: String, page: Int) {
 
-        let urlString = "https://api.unsplash.com/search/photos?page=1&query=\(query)&client_id=9C3O-Dt7AQEgrcVKBPwUpynL1z3x0uZCbUM-UTr1how"
-
         NetworkDataFetch.shared.fetchImages(query: query, page: page) { searchResult, error in
             if error == nil {
                 guard let searchResult = searchResult else { return }
-                self.imagesData = searchResult.results
+                self.imagesData.append(contentsOf: searchResult.results)
                 self.imagesCollectionView.reloadData()
             } else {
-                print(error?.localizedDescription)
+                print(error)
             }
         }
     }
@@ -92,6 +93,13 @@ extension SearchViewController: UICollectionViewDataSource {
 
 extension SearchViewController: UICollectionViewDelegate {
 
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == imagesData.count - 1 {
+            currentPage += 1
+            print(currentPage)
+            fetchImages(query: query, page: currentPage)
+        }
+    }
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout
@@ -100,8 +108,8 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(
-            width: 83,
-            height: 80
+            width: 83 * width,
+            height: 83 * width
         )
     }
 
@@ -115,7 +123,6 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
 extension SearchViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-
         print(searchText)
     }
 
@@ -123,7 +130,10 @@ extension SearchViewController: UISearchBarDelegate {
         let query = searchBar.text
         guard let query = query else { return }
         if query != "" {
-            fetchImages(query: query, page: 1)
+            self.imagesData.removeAll()
+            self.query = query
+            self.currentPage = 1
+            self.fetchImages(query: query, page: currentPage)
         }
     }
 }
