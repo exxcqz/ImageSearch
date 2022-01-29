@@ -19,6 +19,7 @@
 		11EE40FE27A5325A00D76337 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EE40FD27A5325A00D76337 /* UserModel.swift */; };
 		11EE410027A5472900D76337 /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EE40FF27A5472900D76337 /* NetworkRequest.swift */; };
 		11EE410227A54ABA00D76337 /* NetworkDataFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EE410127A54ABA00D76337 /* NetworkDataFetch.swift */; };
+		11EE410427A55BCC00D76337 /* NetworkType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EE410327A55BCC00D76337 /* NetworkType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		11EE40FD27A5325A00D76337 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		11EE40FF27A5472900D76337 /* NetworkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		11EE410127A54ABA00D76337 /* NetworkDataFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDataFetch.swift; sourceTree = "<group>"; };
+		11EE410327A55BCC00D76337 /* NetworkType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +121,7 @@
 		11EE40F227A41E7200D76337 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				11EE410327A55BCC00D76337 /* NetworkType.swift */,
 				11EE40FF27A5472900D76337 /* NetworkRequest.swift */,
 				11EE410127A54ABA00D76337 /* NetworkDataFetch.swift */,
 			);
@@ -198,6 +201,7 @@
 			files = (
 				11EE40FC27A52F5900D76337 /* ImageInfo.swift in Sources */,
 				11EE40DB27A41DD800D76337 /* AppDelegate.swift in Sources */,
+				11EE410427A55BCC00D76337 /* NetworkType.swift in Sources */,
 				11EE410027A5472900D76337 /* NetworkRequest.swift in Sources */,
 				11EE40F427A4202700D76337 /* SearchViewController.swift in Sources */,
 				11EE410227A54ABA00D76337 /* NetworkDataFetch.swift in Sources */,

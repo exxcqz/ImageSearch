@@ -12,9 +12,9 @@ class NetworkDataFetch {
 
     private init() {}
 
-    func fetchImages(urlString: String, response: @escaping (SearchResult?, Error?) -> Void) {
+    func fetchImages(query: String, page: Int, response: @escaping (SearchResult?, Error?) -> Void) {
 
-        NetworkRequest.shared.requestData(urlString: urlString) { result in
+        NetworkRequest.shared.requestData(request: NetworkType.getSearchImage.createSearchRequest(query: query, page: page) ) { result in
             switch result {
             case .success(let data):
                 do {

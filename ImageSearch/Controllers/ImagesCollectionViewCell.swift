@@ -9,12 +9,12 @@ import UIKit
 
 class ImagesCollectionViewCell: UICollectionViewCell {
 
-    var imageView: UIImageView = {
+    let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 10
-        imageView.backgroundColor = .red
+        imageView.backgroundColor = .white
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -32,8 +32,8 @@ class ImagesCollectionViewCell: UICollectionViewCell {
 
     func configureImagesCell(imageInfo: ImageInfo) {
 
-        if let url = imageInfo.urls.raw {
-            NetworkRequest.shared.requestData(urlString: url) { result in
+        if let url = imageInfo.urls.small {
+            NetworkRequest.shared.requestDataString(urlString: url) { result in
                 switch result {
                 case .success(let data):
                     let image = UIImage(data: data)
@@ -46,7 +46,6 @@ class ImagesCollectionViewCell: UICollectionViewCell {
         } else {
             imageView.image = nil
         }
-
     }
 }
 

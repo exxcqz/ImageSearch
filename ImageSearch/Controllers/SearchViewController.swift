@@ -22,7 +22,7 @@ class SearchViewController: UIViewController {
         return collectionView
     }()
 
-    var imagesData = [ImageInfo]()
+    private var imagesData = [ImageInfo]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,17 +56,15 @@ class SearchViewController: UIViewController {
         searchController.obscuresBackgroundDuringPresentation = false
     }
 
-    private func fetchImages(imageName: String) {
+    private func fetchImages(query: String, page: Int) {
 
-        let urlString = "https://api.unsplash.com/search/photos?page=1&query=\(imageName)&client_id=9C3O-Dt7AQEgrcVKBPwUpynL1z3x0uZCbUM-UTr1how"
+        let urlString = "https://api.unsplash.com/search/photos?page=1&query=\(query)&client_id=9C3O-Dt7AQEgrcVKBPwUpynL1z3x0uZCbUM-UTr1how"
 
-        NetworkDataFetch.shared.fetchImages(urlString: urlString) { searchResult, error in
+        NetworkDataFetch.shared.fetchImages(query: query, page: page) { searchResult, error in
             if error == nil {
                 guard let searchResult = searchResult else { return }
                 self.imagesData = searchResult.results
-                print(self.imagesData)
                 self.imagesCollectionView.reloadData()
-
             } else {
                 print(error?.localizedDescription)
             }
@@ -122,10 +120,10 @@ extension SearchViewController: UISearchBarDelegate {
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let text = searchBar.text
-        guard let text = text else { return }
-        if text != "" {
-            fetchImages(imageName: text)
+        let query = searchBar.text
+        guard let query = query else { return }
+        if query != "" {
+            fetchImages(query: query, page: 1)
         }
     }
 }
