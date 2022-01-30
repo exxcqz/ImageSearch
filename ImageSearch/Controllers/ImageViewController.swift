@@ -18,20 +18,31 @@ class ImageViewController: UIViewController {
         return imageView
     }()
 
+    let activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.style = .medium
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicator
+
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         view.addSubview(imageView)
+        view.addSubview(activityIndicator)
         setConstraints()
     }
 
     func setImage(imageInfo: ImageInfo) {
+        activityIndicator.startAnimating()
         let url = imageInfo.urls.full
         NetworkRequest.shared.requestDataString(urlString: url) { result in
             switch result {
             case .success(let data):
                 let image = UIImage(data: data)
+                self.activityIndicator.stopAnimating()
                 self.imageView.image = image
                 let width = self.view.bounds.width
                 let scale = width / CGFloat(imageInfo.width)
@@ -53,6 +64,11 @@ extension ImageViewController {
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             imageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10),
             imageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10)
+        ])
+
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: imageView.centerXAnchor, constant: 0),
+            activityIndicator.centerYAnchor.constraint(equalTo: imageView.centerYAnchor, constant: 0)
         ])
     }
 }

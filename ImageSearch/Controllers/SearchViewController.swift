@@ -18,6 +18,7 @@ class SearchViewController: UIViewController {
         collectionView.backgroundColor = .white
         collectionView.bounces = false
         collectionView.register(ImagesCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.keyboardDismissMode = .onDrag
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -25,6 +26,7 @@ class SearchViewController: UIViewController {
     private var imagesData = [ImageInfo]()
     private var query = ""
     private var currentPage = 1
+    private var totalPage = 1
     private var width = UIScreen.main.bounds.size.width / 375
 
     override func viewDidLoad() {
@@ -64,6 +66,7 @@ class SearchViewController: UIViewController {
             if error == nil {
                 guard let searchResult = searchResult else { return }
                 self.imagesData.append(contentsOf: searchResult.results)
+                self.totalPage = searchResult.totalPages
                 DispatchQueue.main.async {
                     self.imagesCollectionView.reloadData()
                 }
@@ -95,7 +98,8 @@ extension SearchViewController: UICollectionViewDataSource {
 extension SearchViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == imagesData.count - 1 {
+        print("будет отображаться - \(indexPath.row), всего в массиве - \(imagesData.count)")
+        if indexPath.row == imagesData.count - 5 && currentPage < totalPage {
             currentPage += 1
             print(currentPage)
             fetchImages(query: query, page: currentPage)
