@@ -12,8 +12,8 @@ struct ImageInfo: Codable {
     let createdAt: String?
     let updatedAt: String?
     let promotedAt: String?
-    let width: Int?
-    let height: Int?
+    let width: Int
+    let height: Int
     let color: String?
     let blurHash: String?
     let description: String?

@@ -100,6 +100,13 @@ extension SearchViewController: UICollectionViewDelegate {
             fetchImages(query: query, page: currentPage)
         }
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let imageViewController = ImageViewController()
+        imageViewController.title = query
+        imageViewController.setImage(imageInfo: imagesData[indexPath.row])
+        navigationController?.pushViewController(imageViewController, animated: true)
+    }
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout

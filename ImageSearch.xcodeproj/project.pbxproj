@@ -20,6 +20,7 @@
 		11EE410027A5472900D76337 /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EE40FF27A5472900D76337 /* NetworkRequest.swift */; };
 		11EE410227A54ABA00D76337 /* NetworkDataFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EE410127A54ABA00D76337 /* NetworkDataFetch.swift */; };
 		11EE410427A55BCC00D76337 /* NetworkType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EE410327A55BCC00D76337 /* NetworkType.swift */; };
+		11EE410627A6624800D76337 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EE410527A6624700D76337 /* ImageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		11EE40FF27A5472900D76337 /* NetworkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		11EE410127A54ABA00D76337 /* NetworkDataFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDataFetch.swift; sourceTree = "<group>"; };
 		11EE410327A55BCC00D76337 /* NetworkType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkType.swift; sourceTree = "<group>"; };
+		11EE410527A6624700D76337 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 			children = (
 				11EE40F327A4202700D76337 /* SearchViewController.swift */,
 				11EE40F527A4231E00D76337 /* ImagesCollectionViewCell.swift */,
+				11EE410527A6624700D76337 /* ImageViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 				11EE40FA27A52ED000D76337 /* SearchResult.swift in Sources */,
 				11EE40FE27A5325A00D76337 /* UserModel.swift in Sources */,
 				11EE40F627A4231E00D76337 /* ImagesCollectionViewCell.swift in Sources */,
+				11EE410627A6624800D76337 /* ImageViewController.swift in Sources */,
 				11EE40DD27A41DD800D76337 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
