@@ -19,6 +19,9 @@ class ImagesCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
 
+    let imageCache = NSCache<AnyObject, AnyObject>()
+    var task: URLSessionDataTask!
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -31,21 +34,35 @@ class ImagesCollectionViewCell: UICollectionViewCell {
     }
 
     func configureImagesCell(imageInfo: ImageInfo) {
+        imageView.image = nil
 
-        if let url = imageInfo.urls.small {
-            NetworkRequest.shared.requestDataString(urlString: url) { result in
-                switch result {
-                case .success(let data):
-                    let image = UIImage(data: data)
-                    self.imageView.image = image
-                case .failure(let error):
-                    self.imageView.image = nil
-                    print("Not found image cell: \(error.localizedDescription)")
-                }
-            }
-        } else {
-            imageView.image = nil
+        if let task = task {
+            task.cancel()
         }
+
+        guard let url = URL(string: imageInfo.urls.small) else { return }
+
+        if let imageFromCache = imageCache.object(forKey: url.absoluteString as AnyObject) as? UIImage {
+            self.imageView.image = imageFromCache
+            return
+        }
+
+        task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard
+                let data = data,
+                let image = UIImage(data: data)
+            else {
+                print("Couldn't load image form url: \(url)")
+                return
+            }
+
+            self.imageCache.setObject(image, forKey: url.absoluteString as AnyObject)
+
+            DispatchQueue.main.async {
+                self.imageView.image = image
+            }
+        }
+        task.resume()
     }
 }
 

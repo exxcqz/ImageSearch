@@ -27,25 +27,21 @@ class ImageViewController: UIViewController {
     }
 
     func setImage(imageInfo: ImageInfo) {
-        if let url = imageInfo.urls.full {
-            NetworkRequest.shared.requestDataString(urlString: url) { result in
-                switch result {
-                case .success(let data):
-                    let image = UIImage(data: data)
-                    self.imageView.image = image
-                    let width = self.view.bounds.width
-                    let scale = width / CGFloat(imageInfo.width)
-                    self.imageView.heightAnchor.constraint(equalToConstant: CGFloat(imageInfo.height) * scale).isActive = true
-                case .failure(let error):
-                    self.imageView.image = nil
-                    print("Not found image cell: \(error.localizedDescription)")
-                }
+        let url = imageInfo.urls.full
+        NetworkRequest.shared.requestDataString(urlString: url) { result in
+            switch result {
+            case .success(let data):
+                let image = UIImage(data: data)
+                self.imageView.image = image
+                let width = self.view.bounds.width
+                let scale = width / CGFloat(imageInfo.width)
+                self.imageView.heightAnchor.constraint(equalToConstant: CGFloat(imageInfo.height) * scale).isActive = true
+            case .failure(let error):
+                self.imageView.image = nil
+                print("Not found image cell: \(error.localizedDescription)")
             }
-        } else {
-            self.imageView.image = nil
         }
     }
-
 }
 
 //MARK: - SetConstraints

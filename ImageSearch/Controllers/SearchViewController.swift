@@ -60,12 +60,13 @@ class SearchViewController: UIViewController {
     }
 
     private func fetchImages(query: String, page: Int) {
-
         NetworkDataFetch.shared.fetchImages(query: query, page: page) { searchResult, error in
             if error == nil {
                 guard let searchResult = searchResult else { return }
                 self.imagesData.append(contentsOf: searchResult.results)
-                self.imagesCollectionView.reloadData()
+                DispatchQueue.main.async {
+                    self.imagesCollectionView.reloadData()
+                }
             } else {
                 print(error)
             }
@@ -104,7 +105,8 @@ extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let imageViewController = ImageViewController()
         imageViewController.title = query
-        imageViewController.setImage(imageInfo: imagesData[indexPath.row])
+        let imageInfo = imagesData[indexPath.row]
+        imageViewController.setImage(imageInfo: imageInfo)
         navigationController?.pushViewController(imageViewController, animated: true)
     }
 }
