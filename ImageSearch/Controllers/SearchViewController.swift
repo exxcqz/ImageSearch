@@ -8,7 +8,6 @@
 import UIKit
 
 class SearchViewController: UIViewController {
-
     private let searchController = UISearchController(searchResultsController: nil)
 
     private var imagesCollectionView: UICollectionView = {
@@ -64,7 +63,8 @@ class SearchViewController: UIViewController {
     private func fetchImages(query: String, page: Int) {
         NetworkDataFetch.shared.fetchImages(query: query, page: page) { searchResult, error in
             if error == nil {
-                guard let searchResult = searchResult else { return }
+                guard
+                    let searchResult = searchResult else { return }
                 self.imagesData.append(contentsOf: searchResult.results)
                 self.totalPage = searchResult.totalPages
                 self.currentPage += 1
@@ -72,13 +72,13 @@ class SearchViewController: UIViewController {
                     self.imagesCollectionView.reloadData()
                 }
             } else {
-                print(error)
+                print(error?.localizedDescription)
             }
         }
     }
 }
 
-//MARK: - UICollectionViewDataSource
+// MARK: - UICollectionViewDataSource
 
 extension SearchViewController: UICollectionViewDataSource {
 
@@ -94,7 +94,7 @@ extension SearchViewController: UICollectionViewDataSource {
     }
 }
 
-//MARK: - UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate
 
 extension SearchViewController: UICollectionViewDelegate {
 
@@ -121,10 +121,10 @@ extension SearchViewController: UICollectionViewDelegate {
     }
 }
 
-//MARK: - UICollectionViewDelegateFlowLayout
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension SearchViewController: UICollectionViewDelegateFlowLayout {
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(
             width: 83 * width,
@@ -137,7 +137,7 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-//MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension SearchViewController: UISearchBarDelegate {
 
@@ -162,7 +162,7 @@ extension SearchViewController: UISearchBarDelegate {
     }
 }
 
-//MARK: - SetConstraints
+// MARK: - SetConstraints
 
 extension SearchViewController {
 

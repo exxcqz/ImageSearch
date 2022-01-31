@@ -45,7 +45,7 @@ class ImagesCollectionViewCell: UICollectionViewCell {
             self.imageView.image = imageFromCache
             return
         }
-        task = URLSession.shared.dataTask(with: url) { data, response, error in
+        task = URLSession.shared.dataTask(with: url) { data, _, _ in
             guard
                 let data = data,
                 let image = UIImage(data: data)
@@ -62,7 +62,7 @@ class ImagesCollectionViewCell: UICollectionViewCell {
     }
 }
 
-//MARK: - SetConstraints
+// MARK: - SetConstraints
 
 extension ImagesCollectionViewCell {
 

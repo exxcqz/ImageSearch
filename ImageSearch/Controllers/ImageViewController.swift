@@ -28,7 +28,6 @@ class ImageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .white
         view.addSubview(imageView)
         view.addSubview(activityIndicator)
@@ -46,7 +45,9 @@ class ImageViewController: UIViewController {
                 self.imageView.image = image
                 let width = self.view.bounds.width
                 let scale = width / CGFloat(imageInfo.width)
-                self.imageView.heightAnchor.constraint(equalToConstant: CGFloat(imageInfo.height) * scale).isActive = true
+                self.imageView.heightAnchor.constraint(
+                    equalToConstant: CGFloat(imageInfo.height) * scale
+                ).isActive = true
             case .failure(let error):
                 self.imageView.image = nil
                 print("Not found image cell: \(error.localizedDescription)")
@@ -55,7 +56,7 @@ class ImageViewController: UIViewController {
     }
 }
 
-//MARK: - SetConstraints
+// MARK: - SetConstraints
 
 extension ImageViewController {
 

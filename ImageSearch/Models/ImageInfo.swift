@@ -53,7 +53,7 @@ struct ImageInfo: Codable {
     }
 }
 
-//MARK: - URLs
+// MARK: - URLs
 
 struct Urls: Codable {
     let raw: String
@@ -63,7 +63,7 @@ struct Urls: Codable {
     let thumb: String
 }
 
-//MARK: - Links
+// MARK: - Links
 
 struct Links: Codable {
     let selfLink: String?
@@ -79,7 +79,7 @@ struct Links: Codable {
     }
 }
 
-//MARK: - TopicSubmissions
+// MARK: - TopicSubmissions
 
 struct TopicSubmissions: Codable {
     let businessWork: BusinessWork?
@@ -89,7 +89,7 @@ struct TopicSubmissions: Codable {
     }
 }
 
-//MARK: - BusinessWork
+// MARK: - BusinessWork
 
 struct BusinessWork: Codable {
     let status: String?
@@ -101,7 +101,7 @@ struct BusinessWork: Codable {
     }
 }
 
-//MARK: - Tag
+// MARK: - Tag
 
 struct Tag: Codable {
     let type: String?
