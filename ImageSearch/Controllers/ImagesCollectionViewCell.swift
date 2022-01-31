@@ -19,7 +19,6 @@ class ImagesCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    let imageCache = NSCache<AnyObject, AnyObject>()
     var task: URLSessionDataTask!
     
     override init(frame: CGRect) {
@@ -35,17 +34,14 @@ class ImagesCollectionViewCell: UICollectionViewCell {
     
     func configureImagesCell(imageInfo: ImageInfo) {
         imageView.image = nil
-        
         if let task = task {
             task.cancel()
         }
-        
         guard let url = URL(string: imageInfo.urls.thumb) else { return }
-        if let imageFromCache = imageCache.object(forKey: url.absoluteString as AnyObject) as? UIImage {
+        if let imageFromCache = CacheManager.cache.object(forKey: url.absoluteString as AnyObject) as? UIImage {
             self.imageView.image = imageFromCache
             return
         }
-        
         task = URLSession.shared.dataTask(with: url) { data, _, _ in
             guard
                 let data = data,
@@ -53,8 +49,7 @@ class ImagesCollectionViewCell: UICollectionViewCell {
             else {
                 return
             }
-            self.imageCache.setObject(image, forKey: url.absoluteString as AnyObject)
-            
+            CacheManager.cache.setObject(image, forKey: url.absoluteString as AnyObject)
             DispatchQueue.main.async {
                 self.imageView.image = image
             }

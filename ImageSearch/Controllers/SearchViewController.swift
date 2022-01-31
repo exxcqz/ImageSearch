@@ -61,17 +61,20 @@ class SearchViewController: UIViewController {
     }
 
     private func fetchData(query: String, page: Int) {
-        NetworkDataFetch.shared.fetchSearchData(query: query, page: page) { searchResult, error in
-            if error == nil {
-                guard let searchResult = searchResult else { return }
-                self.imagesData.append(contentsOf: searchResult.results)
-                self.totalPage = searchResult.totalPages
-                self.currentPage += 1
-                DispatchQueue.main.async {
-                    self.imagesCollectionView.reloadData()
+        for page in page...page + 10 {
+            NetworkDataFetch.shared.fetchSearchData(query: query, page: page) { searchResult, error in
+                if error == nil {
+                    guard let searchResult = searchResult else { return }
+                    self.imagesData.append(contentsOf: searchResult.results)
+                    self.totalPage = searchResult.totalPages
+                    if self.currentPage == self.totalPage { return }
+                    self.currentPage += 1
+                    DispatchQueue.main.async {
+                        self.imagesCollectionView.reloadData()
+                    }
+                } else {
+                    print(error?.localizedDescription)
                 }
-            } else {
-                print(error?.localizedDescription)
             }
         }
     }
@@ -99,7 +102,7 @@ extension SearchViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         print("будет отображаться - \(indexPath.row), всего в массиве - \(imagesData.count)")
-        if indexPath.row == imagesData.count - 10 && currentPage < totalPage {
+        if indexPath.row == imagesData.count - 15 && currentPage < totalPage {
             fetchData(query: query, page: currentPage)
             //            var indexPaths: [IndexPath] = []
             //            for i in indexPath.row...indexPath.row + 30 {
@@ -149,6 +152,8 @@ extension SearchViewController: UISearchBarDelegate {
         guard let query = query else { return }
         if query != "" {
             self.imagesData.removeAll()
+            self.imagesCollectionView.reloadData()
+            CacheManager.cache.removeAllObjects()
             self.query = query
             self.currentPage = 1
             self.fetchData(query: query, page: currentPage)
@@ -158,6 +163,7 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         self.imagesData.removeAll()
         self.imagesCollectionView.reloadData()
+        CacheManager.cache.removeAllObjects()
     }
 }
 
