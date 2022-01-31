@@ -37,7 +37,7 @@ class ImageViewController: UIViewController {
 
     func setImage(imageInfo: ImageInfo) {
         activityIndicator.startAnimating()
-        let url = imageInfo.urls.full
+        let url = imageInfo.urls.regular
         NetworkRequest.shared.requestDataString(urlString: url) { result in
             switch result {
             case .success(let data):

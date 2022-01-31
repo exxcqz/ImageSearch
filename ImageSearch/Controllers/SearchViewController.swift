@@ -67,6 +67,7 @@ class SearchViewController: UIViewController {
                 guard let searchResult = searchResult else { return }
                 self.imagesData.append(contentsOf: searchResult.results)
                 self.totalPage = searchResult.totalPages
+                self.currentPage += 1
                 DispatchQueue.main.async {
                     self.imagesCollectionView.reloadData()
                 }
@@ -99,10 +100,15 @@ extension SearchViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         print("будет отображаться - \(indexPath.row), всего в массиве - \(imagesData.count)")
-        if indexPath.row == imagesData.count - 5 && currentPage < totalPage {
-            currentPage += 1
-            print(currentPage)
+        if indexPath.row == imagesData.count - 10 && currentPage < totalPage {
             fetchImages(query: query, page: currentPage)
+            //            var indexPaths: [IndexPath] = []
+            //            for i in indexPath.row...indexPath.row + 30 {
+            //                indexPaths.append(IndexPath(row: i, section: 0))
+            //            }
+            //            DispatchQueue.main.async {
+            //                self.imagesCollectionView.reloadItems(at: indexPaths)
+            //            }
         }
     }
 
@@ -118,7 +124,7 @@ extension SearchViewController: UICollectionViewDelegate {
 //MARK: - UICollectionViewDelegateFlowLayout
 
 extension SearchViewController: UICollectionViewDelegateFlowLayout {
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(
             width: 83 * width,
@@ -148,6 +154,11 @@ extension SearchViewController: UISearchBarDelegate {
             self.currentPage = 1
             self.fetchImages(query: query, page: currentPage)
         }
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.imagesData.removeAll()
+        self.imagesCollectionView.reloadData()
     }
 }
 
