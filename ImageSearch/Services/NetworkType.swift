@@ -26,8 +26,7 @@ enum NetworkType {
     }
 
     func createSearchRequest(query: String, page: Int) -> URLRequest {
-        let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        print(query)
+        let query = query.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)
         let path = path + "?per_page=30&page=\(page)&query=\(query!)"
         let url = URL(string: path, relativeTo: baseURL)
         var request = URLRequest(url: url!)

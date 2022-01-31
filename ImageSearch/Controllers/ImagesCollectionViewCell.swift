@@ -8,7 +8,7 @@
 import UIKit
 
 class ImagesCollectionViewCell: UICollectionViewCell {
-
+    
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -18,33 +18,34 @@ class ImagesCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-
+    
     let imageCache = NSCache<AnyObject, AnyObject>()
     var task: URLSessionDataTask!
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        
         self.addSubview(imageView)
         setConstraints()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     func configureImagesCell(imageInfo: ImageInfo) {
         imageView.image = nil
-
+        
         if let task = task {
             task.cancel()
         }
-
+        
         guard let url = URL(string: imageInfo.urls.thumb) else { return }
         if let imageFromCache = imageCache.object(forKey: url.absoluteString as AnyObject) as? UIImage {
             self.imageView.image = imageFromCache
             return
         }
+        
         task = URLSession.shared.dataTask(with: url) { data, _, _ in
             guard
                 let data = data,
@@ -53,7 +54,7 @@ class ImagesCollectionViewCell: UICollectionViewCell {
                 return
             }
             self.imageCache.setObject(image, forKey: url.absoluteString as AnyObject)
-
+            
             DispatchQueue.main.async {
                 self.imageView.image = image
             }

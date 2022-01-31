@@ -60,11 +60,10 @@ class SearchViewController: UIViewController {
         searchController.obscuresBackgroundDuringPresentation = false
     }
 
-    private func fetchImages(query: String, page: Int) {
-        NetworkDataFetch.shared.fetchImages(query: query, page: page) { searchResult, error in
+    private func fetchData(query: String, page: Int) {
+        NetworkDataFetch.shared.fetchSearchData(query: query, page: page) { searchResult, error in
             if error == nil {
-                guard
-                    let searchResult = searchResult else { return }
+                guard let searchResult = searchResult else { return }
                 self.imagesData.append(contentsOf: searchResult.results)
                 self.totalPage = searchResult.totalPages
                 self.currentPage += 1
@@ -101,7 +100,7 @@ extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         print("будет отображаться - \(indexPath.row), всего в массиве - \(imagesData.count)")
         if indexPath.row == imagesData.count - 10 && currentPage < totalPage {
-            fetchImages(query: query, page: currentPage)
+            fetchData(query: query, page: currentPage)
             //            var indexPaths: [IndexPath] = []
             //            for i in indexPath.row...indexPath.row + 30 {
             //                indexPaths.append(IndexPath(row: i, section: 0))
@@ -152,7 +151,7 @@ extension SearchViewController: UISearchBarDelegate {
             self.imagesData.removeAll()
             self.query = query
             self.currentPage = 1
-            self.fetchImages(query: query, page: currentPage)
+            self.fetchData(query: query, page: currentPage)
         }
     }
 

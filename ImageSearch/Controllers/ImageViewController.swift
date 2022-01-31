@@ -8,7 +8,7 @@
 import UIKit
 
 class ImageViewController: UIViewController {
-
+    
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
@@ -17,15 +17,15 @@ class ImageViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-
+    
     let activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView()
         activityIndicator.style = .medium
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         return activityIndicator
-
+        
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -33,25 +33,18 @@ class ImageViewController: UIViewController {
         view.addSubview(activityIndicator)
         setConstraints()
     }
-
+    
     func setImage(imageInfo: ImageInfo) {
         activityIndicator.startAnimating()
         let url = imageInfo.urls.regular
-        NetworkRequest.shared.requestDataString(urlString: url) { result in
-            switch result {
-            case .success(let data):
-                let image = UIImage(data: data)
-                self.activityIndicator.stopAnimating()
-                self.imageView.image = image
-                let width = self.view.bounds.width
-                let scale = width / CGFloat(imageInfo.width)
-                self.imageView.heightAnchor.constraint(
-                    equalToConstant: CGFloat(imageInfo.height) * scale
-                ).isActive = true
-            case .failure(let error):
-                self.imageView.image = nil
-                print("Not found image cell: \(error.localizedDescription)")
-            }
+        NetworkDataFetch.shared.fetchImage(urlImage: url) { image in
+            self.activityIndicator.stopAnimating()
+            self.imageView.image = image
+            let width = self.view.bounds.width
+            let scale = width / CGFloat(imageInfo.width)
+            self.imageView.heightAnchor.constraint(
+                equalToConstant: CGFloat(imageInfo.height) * scale
+            ).isActive = true
         }
     }
 }
@@ -59,14 +52,14 @@ class ImageViewController: UIViewController {
 // MARK: - SetConstraints
 
 extension ImageViewController {
-
+    
     private func setConstraints() {
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             imageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10),
             imageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10)
         ])
-
+        
         NSLayoutConstraint.activate([
             activityIndicator.centerXAnchor.constraint(equalTo: imageView.centerXAnchor, constant: 0),
             activityIndicator.centerYAnchor.constraint(equalTo: imageView.centerYAnchor, constant: 0)
