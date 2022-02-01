@@ -8,8 +8,7 @@
 import UIKit
 
 class ImagesCollectionViewCell: UICollectionViewCell {
-    
-    let imageView: UIImageView = {
+    private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -18,20 +17,19 @@ class ImagesCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
-    var task: URLSessionDataTask!
-    
+
+    private var task: URLSessionDataTask!
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         self.addSubview(imageView)
         setConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func configureImagesCell(imageInfo: ImageInfo) {
         imageView.image = nil
         if let task = task {

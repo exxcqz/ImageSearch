@@ -8,8 +8,7 @@
 import UIKit
 
 class ImageViewController: UIViewController {
-    
-    let imageView: UIImageView = {
+    private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
         imageView.clipsToBounds = true
@@ -17,15 +16,15 @@ class ImageViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
-    let activityIndicator: UIActivityIndicatorView = {
+
+    private let activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView()
         activityIndicator.style = .medium
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         return activityIndicator
-        
+
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -33,7 +32,7 @@ class ImageViewController: UIViewController {
         view.addSubview(activityIndicator)
         setConstraints()
     }
-    
+
     func setImage(imageInfo: ImageInfo) {
         activityIndicator.startAnimating()
         let url = imageInfo.urls.regular
@@ -52,14 +51,14 @@ class ImageViewController: UIViewController {
 // MARK: - SetConstraints
 
 extension ImageViewController {
-    
+
     private func setConstraints() {
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             imageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10),
             imageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10)
         ])
-        
+
         NSLayoutConstraint.activate([
             activityIndicator.centerXAnchor.constraint(equalTo: imageView.centerXAnchor, constant: 0),
             activityIndicator.centerYAnchor.constraint(equalTo: imageView.centerYAnchor, constant: 0)

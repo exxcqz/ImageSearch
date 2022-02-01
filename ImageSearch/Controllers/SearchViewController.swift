@@ -9,7 +9,6 @@ import UIKit
 
 class SearchViewController: UIViewController {
     private let searchController = UISearchController(searchResultsController: nil)
-
     private var imagesCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 8
@@ -26,11 +25,10 @@ class SearchViewController: UIViewController {
     private var query = ""
     private var currentPage = 1
     private var totalPage = 1
-    private var width = UIScreen.main.bounds.size.width / 375
+    private let scaleWidth = UIScreen.main.bounds.size.width / 375
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupViews()
         setDelegate()
         setConstraints()
@@ -72,8 +70,8 @@ class SearchViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.imagesCollectionView.reloadData()
                     }
-                } else {
-                    print(error?.localizedDescription)
+                } else if let error = error {
+                    print(error.localizedDescription)
                 }
             }
         }
@@ -101,16 +99,8 @@ extension SearchViewController: UICollectionViewDataSource {
 extension SearchViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        print("будет отображаться - \(indexPath.row), всего в массиве - \(imagesData.count)")
         if indexPath.row == imagesData.count - 15 && currentPage < totalPage {
             fetchData(query: query, page: currentPage)
-            //            var indexPaths: [IndexPath] = []
-            //            for i in indexPath.row...indexPath.row + 30 {
-            //                indexPaths.append(IndexPath(row: i, section: 0))
-            //            }
-            //            DispatchQueue.main.async {
-            //                self.imagesCollectionView.reloadItems(at: indexPaths)
-            //            }
         }
     }
 
@@ -129,8 +119,8 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(
-            width: 83 * width,
-            height: 83 * width
+            width: 83 * scaleWidth,
+            height: 83 * scaleWidth
         )
     }
 
@@ -142,10 +132,6 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - UISearchBarDelegate
 
 extension SearchViewController: UISearchBarDelegate {
-
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(searchText)
-    }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let query = searchBar.text

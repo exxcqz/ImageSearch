@@ -8,8 +8,7 @@
 import Foundation
 
 enum NetworkType {
-
-    case getSearchImage
+    case getSearchImage(query: String, page: Int)
 
     var baseURL: URL {
         return URL(string: "https://api.unsplash.com/")!
@@ -21,17 +20,26 @@ enum NetworkType {
 
     var path: String {
         switch self {
-        case .getSearchImage: return "search/photos"
+        case .getSearchImage(let query, let page):
+            var path = "search/photos"
+            guard
+                let query = query.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)
+            else {
+                return path
+            }
+            path = "search/photos?per_page=30&page=\(page)&query=\(query)"
+            return path
         }
     }
 
-    func createSearchRequest(query: String, page: Int) -> URLRequest {
-        let query = query.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)
-        let path = path + "?per_page=30&page=\(page)&query=\(query!)"
+    var request: URLRequest {
         let url = URL(string: path, relativeTo: baseURL)
         var request = URLRequest(url: url!)
         request.allHTTPHeaderFields = headers
-        request.httpMethod = "GET"
-        return request
+        switch self {
+        case .getSearchImage:
+            request.httpMethod = "GET"
+            return request
+        }
     }
 }
