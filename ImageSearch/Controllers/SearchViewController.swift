@@ -67,7 +67,7 @@ class SearchViewController: UIViewController {
                     guard let searchResult = searchResult else { return }
                     self.imagesData.append(contentsOf: searchResult.results)
                     self.totalPage = searchResult.totalPages
-                    if self.currentPage == self.totalPage { return }
+                    if self.currentPage > self.totalPage { return }
                     self.currentPage += 1
                     DispatchQueue.main.async {
                         self.imagesCollectionView.reloadData()
