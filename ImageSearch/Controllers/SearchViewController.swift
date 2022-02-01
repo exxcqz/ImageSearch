@@ -59,20 +59,18 @@ class SearchViewController: UIViewController {
     }
 
     private func fetchData(query: String, page: Int) {
-        for page in page...page + 10 {
-            NetworkDataFetch.shared.fetchSearchData(query: query, page: page) { searchResult, error in
-                if error == nil {
-                    guard let searchResult = searchResult else { return }
-                    self.imagesData.append(contentsOf: searchResult.results)
-                    self.totalPage = searchResult.totalPages
-                    if self.currentPage > self.totalPage { return }
-                    self.currentPage += 1
-                    DispatchQueue.main.async {
-                        self.imagesCollectionView.reloadData()
-                    }
-                } else if let error = error {
-                    print(error.localizedDescription)
+        NetworkDataFetch.shared.fetchSearchData(query: query, page: page) { searchResult, error in
+            if error == nil {
+                guard let searchResult = searchResult else { return }
+                self.imagesData.append(contentsOf: searchResult.results)
+                self.totalPage = searchResult.totalPages
+                if self.currentPage > self.totalPage { return }
+                self.currentPage += 1
+                DispatchQueue.main.async {
+                    self.imagesCollectionView.reloadData()
                 }
+            } else if let error = error {
+                print(error.localizedDescription)
             }
         }
     }
